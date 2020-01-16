@@ -1,25 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Global } from "@emotion/core";
+import { ThemeProvider } from "emotion-theming";
+import globalCSS from "../src/theme/global-css";
+import theme from "../src/theme/theme";
+import "semantic-ui-css/semantic.min.css";
+import SideNav from "./view/layouts/side-nav";
 
 function App() {
+  console.log(process.env);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Global styles={globalCSS} />
+      <div className="App">
+        <SideNav />
+      </div>
+    </ThemeProvider>
   );
 }
 
