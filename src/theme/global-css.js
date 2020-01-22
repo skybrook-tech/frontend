@@ -22,38 +22,50 @@ const globalCSS = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    --primary-hue: 210;
-    --primary-sat: 100%;
-    --primary-light: 63%;
+    --primary-hue: 169;
+    --primary-sat: 75%;
+    --primary-light: 49%;
+    --primary-lighter: 49%;
     --secondary-hue: 145;
     --secondary-sat: 72%;
     --secondary-light: 47%;
-    --shader: 5%;
+    --shader: 10%;
     --primary-satDarker: calc(var(--primary-sat) + var(--shader));
     --primary-lightDarker: calc(var(--primary-light) - var(--shader));
     --secondary-satDarker: calc(var(--secondary-sat) + var(--shader));
     --secondary-lightDarker: calc(var(--secondary-light) - var(--shader));
     --main-white: #fff;
+
     --main-primary: hsl(
       var(--primary-hue),
       var(--primary-sat),
       var(--primary-light)
     );
+
+    --main-primary-light: hsl(
+      var(--primary-hue),
+      var(--primary-sat),
+      var(--primary-lighter)
+    );
+
     --main-primary-dark: hsl(
       var(--primary-hue),
       var(--primary-satDarker),
       var(--primary-lightDarker)
     );
+
     --main-secondary: hsl(
       var(--secondary-hue),
       var(--secondary-sat),
       var(--secondary-light)
     );
+
     --main-secondary-dark: hsl(
       var(--secondary-hue),
       var(--secondary-satDarker),
       var(--secondary-lightDarker)
     );
+
     --main-light-grey: #f8fafc;
     --main-darker-grey: #eef1f5;
     --main-darker: #c8d7e6;
@@ -76,6 +88,10 @@ const globalCSS = css`
   .fit-parent {
     width: 100%;
     height: 100%;
+  }
+  a,
+  a:hover {
+    color: inherit;
   }
 `;
 

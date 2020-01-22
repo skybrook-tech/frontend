@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Global } from "@emotion/core";
 import { ThemeProvider } from "emotion-theming";
 import globalCSS from "../src/theme/global-css";
 import theme from "../src/theme/theme";
 import "semantic-ui-css/semantic.min.css";
-import SideNav from "./view/layouts/side-nav";
+import Routes from "./view/routes";
+import currentUser from "./utils/current-user";
 
 function App() {
-  console.log(process.env);
+  useEffect(() => {
+    currentUser.init();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalCSS} />
+
       <div className="App">
-        <SideNav />
+        <Routes />
       </div>
     </ThemeProvider>
   );
