@@ -10,7 +10,7 @@ describe("Login", () => {
 
       cy.route("POST", "**/users/login", "@loginJSON");
 
-      cy.get("[data-testid=landingPage-loginButton]").click();
+      cy.get("[data-testid=topBarNav-loginButton]").click();
       cy.get("[data-testid=loginPage-authForm-submitButton]").click();
 
       cy.get("[data-testid=loginPage-authForm] .field .prompt").should(
@@ -44,7 +44,7 @@ describe("Login", () => {
 
       cy.route("POST", "**/users/login", "@loginJSON", { status: 401 });
 
-      cy.get("[data-testid=landingPage-loginButton]").click();
+      cy.get("[data-testid=topBarNav-loginButton]").click();
 
       findAuthFieldsAndType({ page: "loginPage" });
 

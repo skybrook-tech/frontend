@@ -20,6 +20,10 @@ const Login = () => {
       </Header>
 
       <LoginForm />
+
+      <Link className="mt2" to="/signup">
+        <h4 css={{ color: "white" }}>Don't have an account? sign up</h4>
+      </Link>
     </div>
   );
 };

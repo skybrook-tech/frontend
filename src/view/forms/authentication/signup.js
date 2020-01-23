@@ -186,10 +186,6 @@ const SignupForm = props => {
           </Form.Button>
         </Card.Content>
       </Card>
-
-      <Link to="/login">
-        <h4 css={{ color: "white" }}>Already have an account? sign in</h4>
-      </Link>
     </Form>
   );
 };

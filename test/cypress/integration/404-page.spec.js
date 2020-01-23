@@ -7,8 +7,8 @@ describe("404 Page", () => {
       visitLandingPage();
       cy.visit(`${baseURL}/route-that-doesnt-exist`);
 
-      cy.get("[data-testid=landingPage-signupButton]").should("exist");
-      cy.get("[data-testid=landingPage-loginButton]").should("exist");
+      cy.get("[data-testid=topBarNav-signupButton]").should("exist");
+      cy.get("[data-testid=topBarNav-loginButton]").should("exist");
       cy.get("[data-testid=404-pageNotFoundText]").should("exist");
       cy.get("[data-testid=404-loginPageHint]").should("exist");
     });
@@ -19,8 +19,8 @@ describe("404 Page", () => {
       visitLandingPage();
       cy.visit(`${baseURL}/u/fake-user`);
 
-      cy.get("[data-testid=landingPage-signupButton]").should("exist");
-      cy.get("[data-testid=landingPage-loginButton]").should("exist");
+      cy.get("[data-testid=topBarNav-signupButton]").should("exist");
+      cy.get("[data-testid=topBarNav-loginButton]").should("exist");
       cy.get("[data-testid=404-pageNotFoundText]").should("exist");
       cy.get("[data-testid=404-loginPageHint]").should("exist");
     });

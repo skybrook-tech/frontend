@@ -24,12 +24,15 @@ const TopBar = ({ primary }) => {
         }
       })}
     >
-      <Menu.Item>
-        <Header size="large">MockEnd</Header>
-      </Menu.Item>
+      <Link data-testid="topBarNav-homeButton" to="/">
+        <Menu.Item>
+          <Header size="large">MockEnd</Header>
+        </Menu.Item>
+      </Link>
+
       <Menu.Menu position="right">
         <Link
-          data-testid="landingPage-loginButton"
+          data-testid="topBarNav-loginButton"
           to="/login"
           css={{ "&&&": { display: "flex" } }}
         >
@@ -40,7 +43,7 @@ const TopBar = ({ primary }) => {
 
         <Link to="/signup">
           <Menu.Item>
-            <Button data-testid="landingPage-signupButton" color="white">
+            <Button data-testid="topBarNav-signupButton" color="white">
               Sign Up
             </Button>
           </Menu.Item>
