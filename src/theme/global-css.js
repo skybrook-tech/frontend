@@ -1,6 +1,31 @@
 import { css } from "@emotion/core";
 
-const globalCSS = css`
+const defaults = theme => css`
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: ${theme.colors.dark};
+  }
+`;
+
+const utils = css`
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fit-parent {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const globalCSS = theme => css`
   body,
   html,
   #root,
@@ -85,14 +110,13 @@ const globalCSS = css`
     --main-text: #717d8a;
   }
 
-  .fit-parent {
-    width: 100%;
-    height: 100%;
-  }
   a,
   a:hover {
     color: inherit;
   }
+
+  ${utils}
+  ${defaults(theme)}
 `;
 
 export default globalCSS;
