@@ -1,19 +1,22 @@
+const colors = {
+  primary: "#3B9ABF",
+  dark: "rgb(89, 94, 94)",
+  mainGradient: `linear-gradient(
+    -45deg,
+    #30CACD,
+    #30CACD,
+    #3B9ABF,
+    #35528C,
+    #330E6A
+  )`
+};
+
 const theme = {
-  colors: {
-    primary: "var(--main-primary);",
-    mainGradient: `linear-gradient(
-      -45deg,
-      #30CACD,
-      #30CACD,
-      #3B9ABF,
-      #35528C,
-      #330E6A
-    )`
-  },
+  colors,
   semanticUI: {
     site: {
       colors: {
-        primaryColor: "#3B9ABF",
+        primaryColor: colors.primary,
         secondaryColor: "#5E6C84",
         anotherColor: "pink",
         white: "white",
