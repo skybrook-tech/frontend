@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Router } from "@reach/router";
-import SideNav from "../layouts/side-nav";
+import currentUser from "../../utils/current-user";
 
 // public
 import LandingPage from "../screens/public/landing-page";
@@ -11,6 +11,16 @@ import NotFoundScreenPublic from "../screens/public/404";
 // private
 import Dashboard from "../screens/private/dashboard";
 
+const ProtectedRoute = props => {
+  const { Screen, path, navigate, ...rest } = props;
+
+  if (!currentUser.get("token")) {
+    return <NotFoundScreenPublic />;
+  }
+
+  return <Screen path={path} navigate={navigate} {...rest} />;
+};
+
 const Routes = () => {
   return (
     <Router className="fit-parent">
@@ -20,8 +30,11 @@ const Routes = () => {
 
       <NotFoundScreenPublic default />
 
-      {/* TODO: wrap Dashboard in private route */}
-      <Dashboard path="/u/:userId" />
+      <ProtectedRoute
+        className="fit-parent"
+        Screen={Dashboard}
+        path="/u/:userId/*"
+      />
     </Router>
   );
 };
