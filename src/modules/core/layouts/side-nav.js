@@ -4,13 +4,15 @@ import { jsx, css } from "@emotion/core";
 import PropTypes from "prop-types";
 import DefaultSideMenu from "../components/menus/side-menu";
 import DefaultUserDropdown from "../components/user-dropdown";
+import { Transition } from "react-transition-group-v2";
+import Icon from "../components/icon";
 
 const containerStyles = ({ colors }) => css`
   background-color: ${colors.lightGrey};
 `;
 
-const sideBarStyles = css`
-  width: 244px !important ;
+const sideBarStyles = (theme, props) => css`
+  width: ${props.sideBarWidth};
 `;
 
 const sideBarHeaderStyles = css`
@@ -22,11 +24,22 @@ const screenHeaderStyles = css`
   height: 70px;
 `;
 
-const DefaultHeader = () => (
-  <div className="flex-center" css={sideBarHeaderStyles}>
+const DefaultHeader = ({ setVisible }) => (
+  <div className="flex-center relative" css={sideBarHeaderStyles}>
     sidebar header
+    <div className="absolute close right-0 top-0 flex-center px2">
+      <div
+        className="cursor-pointer flex-center transition__grow-sml"
+        onClick={() => setVisible(false)}
+      >
+        <Icon name="angle left" />
+        <Icon name="bars" />
+      </div>
+    </div>
   </div>
 );
+
+const CloseMenuIcon = () => <Icon name="bars transition__grow-sml" />;
 
 const CoreLayoutSideNav = props => {
   const {
@@ -34,31 +47,77 @@ const CoreLayoutSideNav = props => {
     modules,
     Header = DefaultHeader,
     SideMenu = DefaultSideMenu,
-    UserDropdown = DefaultUserDropdown
+    UserDropdown = DefaultUserDropdown,
+    sideBarWidth = "244px"
   } = props;
+
   const [visible, setVisible] = useState(true);
+
+  const menuTransition = {
+    entering: { left: `-${sideBarWidth}` },
+    entered: { left: 0 },
+    exiting: { left: 0 },
+    exited: { left: `-${sideBarWidth}` }
+  };
+
+  const screenTransition = {
+    entering: { paddingLeft: 0 },
+    entered: { paddingLeft: sideBarWidth },
+    exiting: { paddingLeft: sideBarWidth },
+    exited: { paddingLeft: 0 }
+  };
+
+  const menutTransitionMS = "trans-duration-500ms";
 
   return (
     <div css={containerStyles} className="flex fit-parent">
-      <div className="flex flex-column" css={sideBarStyles}>
-        <Header />
-        <SideMenu modules={modules} visible={visible} setVisible={setVisible} />
-      </div>
-
-      <div className="flex-auto flex flex-column">
-        <div
-          className="flex justify-between items-center px2"
-          css={screenHeaderStyles}
-        >
-          <div id="app-screen-header-mount" />
-
-          <div className="">
-            <UserDropdown />
+      <Transition in={visible} timeout={1}>
+        {state => (
+          <div
+            className={`flex flex-column absolute ${menutTransitionMS}`}
+            css={theme => sideBarStyles(theme, { sideBarWidth })}
+            style={menuTransition[state]}
+          >
+            <Header setVisible={setVisible} />
+            <SideMenu
+              modules={modules}
+              visible={visible}
+              setVisible={setVisible}
+            />
           </div>
-        </div>
+        )}
+      </Transition>
 
-        <div className="flex-auto">{children}</div>
-      </div>
+      <Transition in={visible} timeout={1}>
+        {state => (
+          <div
+            className={`flex-auto flex flex-column ${menutTransitionMS}`}
+            style={screenTransition[state]}
+          >
+            <div
+              className="flex justify-between items-center px2"
+              css={screenHeaderStyles}
+            >
+              {!visible && (
+                <div
+                  className="cursor-pointer"
+                  onClick={() => setVisible(true)}
+                >
+                  <CloseMenuIcon />
+                </div>
+              )}
+
+              <div id="app-screen-header-mount" />
+
+              <div className="">
+                <UserDropdown />
+              </div>
+            </div>
+
+            <div className="flex-auto">{children}</div>
+          </div>
+        )}
+      </Transition>
     </div>
   );
 };

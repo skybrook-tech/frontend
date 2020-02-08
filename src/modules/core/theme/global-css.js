@@ -12,6 +12,16 @@ const defaults = theme => css`
   }
 `;
 
+const transitions = css`
+  .transition__grow-sml {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+`;
+
 const utils = css`
   .flex-center {
     display: flex;
@@ -26,6 +36,14 @@ const utils = css`
 
   .reach-router div[role="group"] {
     height: 100%;
+  }
+
+  .trans-duration-500ms {
+    transition-duration: 500ms;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
   }
 `;
 
@@ -121,6 +139,7 @@ const globalCSS = theme => css`
   }
 
   ${utils}
+  ${transitions}
   ${defaults(theme)}
 `;
 
