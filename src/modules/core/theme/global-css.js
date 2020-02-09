@@ -20,6 +20,14 @@ const transitions = css`
       transform: scale(1.1);
     }
   }
+
+  .transition-duration-500ms {
+    transition-duration: 500ms;
+  }
+
+  .transition-duration-200ms {
+    transition-duration: 200ms;
+  }
 `;
 
 const utils = css`
@@ -36,10 +44,6 @@ const utils = css`
 
   .reach-router div[role="group"] {
     height: 100%;
-  }
-
-  .trans-duration-500ms {
-    transition-duration: 500ms;
   }
 
   .cursor-pointer {

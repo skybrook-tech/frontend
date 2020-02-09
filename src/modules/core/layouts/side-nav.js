@@ -6,6 +6,7 @@ import DefaultSideMenu from "../components/menus/side-menu";
 import DefaultUserDropdown from "../components/user-dropdown";
 import { Transition } from "react-transition-group-v2";
 import Icon from "../components/icon";
+import { Transition as TransitionSUI } from "semantic-ui-react";
 
 const containerStyles = ({ colors }) => css`
   background-color: ${colors.lightGrey};
@@ -13,6 +14,11 @@ const containerStyles = ({ colors }) => css`
 
 const sideBarStyles = (theme, props) => css`
   width: ${props.sideBarWidth};
+  height: 100%;
+  & #app-side-menu-mount {
+    margin-top: -10px;
+    padding-top: 10px;
+  }
 `;
 
 const sideBarHeaderStyles = css`
@@ -52,6 +58,7 @@ const CoreLayoutSideNav = props => {
   } = props;
 
   const [visible, setVisible] = useState(true);
+  const [replaced, setReplaced] = useState(false);
 
   const menuTransition = {
     entering: { left: `-${sideBarWidth}` },
@@ -67,7 +74,7 @@ const CoreLayoutSideNav = props => {
     exited: { paddingLeft: 0 }
   };
 
-  const menutTransitionMS = "trans-duration-500ms";
+  const menutTransitionMS = "transition-duration-500ms";
 
   return (
     <div css={containerStyles} className="flex fit-parent">
@@ -78,12 +85,28 @@ const CoreLayoutSideNav = props => {
             css={theme => sideBarStyles(theme, { sideBarWidth })}
             style={menuTransition[state]}
           >
-            <Header setVisible={setVisible} />
-            <SideMenu
-              modules={modules}
-              visible={visible}
+            <Header
               setVisible={setVisible}
+              setReplaced={setReplaced}
+              replaced={replaced}
             />
+            <div className="flex-auto relative">
+              <div id="app-side-menu-mount" className="absolute fit-parent" />
+
+              <TransitionSUI
+                visible={!replaced}
+                animation={"fade up"}
+                duration={200}
+              >
+                <div className="absolute fit-parent">
+                  <SideMenu
+                    modules={modules}
+                    visible={visible}
+                    setVisible={setVisible}
+                  />
+                </div>
+              </TransitionSUI>
+            </div>
           </div>
         )}
       </Transition>

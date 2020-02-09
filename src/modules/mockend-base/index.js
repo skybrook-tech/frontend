@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import theme from "./theme/theme";
 import "semantic-ui-css/semantic.min.css";
 import currentUser from "../core/utils/current-user";
-import moduleA from "./module-a";
-import moduleB from "./module-b";
+import contentManager from "../content-manager";
 import CoreAppBuilder, { CoreLayoutHandler } from "../core";
 import SideBarHeader from "./components/side-bar-header";
 
@@ -11,7 +10,7 @@ import SideBarHeader from "./components/side-bar-header";
 import LandingPage from "./screens/landing-page";
 import NotFoundScreenPublic from "./screens/404";
 
-const modules = [moduleA, moduleB];
+const modules = [contentManager];
 
 function MockendEntry() {
   useEffect(() => {
