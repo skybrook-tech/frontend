@@ -63,14 +63,19 @@ const formConfig = {
   },
   handleSubmit: async (values, { setFieldError }) => {
     try {
-      const { data } = await api.mockend.post("users/register", values);
+      const { data } = await api.userService.post("users/register", values);
 
       currentUser.set({ token: data.token });
-      const userId = currentUser.get("userDetails.id");
 
-      navigate(routes.app.toUrl({ userId }));
+      navigate("/app");
     } catch (error) {
-      setFieldError("response", error.response.data.error);
+      const responseError = get(error, "response.data.error");
+
+      if (responseError) {
+        setFieldError("response", responseError);
+      } else {
+        setFieldError("response", error);
+      }
     }
   }
 };

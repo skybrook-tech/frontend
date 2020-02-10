@@ -6,7 +6,6 @@ import Public404 from "../core/screens/404";
 import currentUser from "../core/utils/current-user";
 
 const PrivateRoutes = ({ children, NotFoundScreenPublic, location }) => {
-  console.log({ children });
   if (!currentUser.get("token")) {
     return <NotFoundScreenPublic location={location} />;
   }

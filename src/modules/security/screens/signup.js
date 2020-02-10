@@ -12,14 +12,14 @@ const containerStyles = theme => ({
   backgroundImage: theme.colors.mainGradient
 });
 
-const Signup = () => {
+const Signup = props => {
   return (
     <div className="fit-parent" css={containerStyles}>
       <Header size="large" color="white">
         <Link to="/">MockEnd</Link>
       </Header>
 
-      <SignupForm />
+      <SignupForm {...props} />
 
       <Link className="mt2" to="/login">
         <h4 css={{ color: "white" }}>Already have an account? sign in</h4>

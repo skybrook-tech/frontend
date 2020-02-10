@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import { useState } from "react";
 import { jsx } from "@emotion/core";
 import { Message } from "semantic-ui-react";
 import Form from "../../../core/ui/form";
@@ -9,26 +10,29 @@ import { navigate } from "@reach/router";
 import currentUser from "../../../core/utils/current-user";
 // TODO: figure out where to put these
 import { api } from "../../../../config/api";
-import routes from "../../../../constants/routes";
 
 const formConfig = {
   validate: values => {
     return Form.validations.isRequired(values, ["email", "password"]);
   },
-  handleSubmit: async (values, { setFieldError, props }) => {
+  handleSubmit: async (values, { setFieldError, setFormError, props }) => {
     try {
-      console.log({ props });
-      const { data } = await api.mockend.post("users/login", values);
+      const { data } = await api.userService.post("/login", values);
       currentUser.set({ token: data.token });
-      const userId = currentUser.get("userDetails.id");
 
-      if (props.location.state.fromUrl) {
+      if (get(props, "location.state.fromUrl")) {
         navigate(props.location.state.fromUrl);
       } else {
-        navigate(routes.app.toUrl({ userId }));
+        navigate("app");
       }
     } catch (error) {
-      setFieldError("response", error.response.data.error);
+      const responseError = get(error, "response.data.error");
+
+      if (responseError) {
+        setFieldError("response", responseError);
+      } else {
+        setFieldError("response", error);
+      }
     }
   }
 };
@@ -47,6 +51,9 @@ const getFieldPropsWithErrors = (name, formik, initialValue) => {
 
 const SignupForm = props => {
   const { handleSubmit, isSubmitting, errors } = props;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
     <Form
@@ -76,6 +83,13 @@ const SignupForm = props => {
             <Form.Input
               placeholder="Enter your password"
               {...getFieldPropsWithErrors("password", props)}
+              type={showPassword ? "text" : "password"}
+              icon={{
+                name: "eye",
+                circular: true,
+                link: true,
+                onClick: togglePasswordVisibility
+              }}
               data-testid="loginPage-authForm-passwordInput"
             />
 

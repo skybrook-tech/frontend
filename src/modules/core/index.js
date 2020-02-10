@@ -7,6 +7,7 @@ import { Global } from "@emotion/core";
 import { ThemeProvider } from "emotion-theming";
 import AuthModule from "../security";
 import merge from "lodash/merge";
+import CoreErrorHandler from "./components/error-handler";
 
 const Home = () => <div path="/">home</div>;
 
@@ -20,25 +21,31 @@ const CoreAppBuilder = ({
     <ThemeProvider theme={merge(defaultTheme, theme)}>
       <Global styles={globalCSS} />
 
-      <AuthModule
-        NotFoundScreenPublic={NotFoundScreenPublic}
-        publicRoutes={publicRoutes}
-        privateRoutes={privateRoutes}
-      />
+      <CoreErrorHandler>
+        <AuthModule
+          NotFoundScreenPublic={NotFoundScreenPublic}
+          publicRoutes={publicRoutes}
+          privateRoutes={privateRoutes}
+        />
+      </CoreErrorHandler>
     </ThemeProvider>
   );
 };
 
 const CoreLayoutHandler = ({ Layout = SideBarLayout, ...rest }) => {
   return (
-    <Layout {...rest}>
-      <Router className="fit-parent">
-        <Home path="/" />
-        {rest.modules.map(({ Component, route }) => (
-          <Component path={route} key={route} />
-        ))}
-      </Router>
-    </Layout>
+    <CoreErrorHandler>
+      <Layout {...rest}>
+        <Router className="fit-parent">
+          <Home path="/" />
+          {rest.modules.map(({ Component, route }) => (
+            <CoreErrorHandler path={route} key={route}>
+              <Component />
+            </CoreErrorHandler>
+          ))}
+        </Router>
+      </Layout>
+    </CoreErrorHandler>
   );
 };
 
