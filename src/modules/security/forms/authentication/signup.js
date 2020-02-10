@@ -10,7 +10,7 @@ import currentUser from "../../../core/utils/current-user";
 import { getFieldPropsWithErrors } from "../../../core/utils/formik";
 import isRequired from "../../../core/utils/validations/is-required";
 // TODO: figure out where to put these
-import { api } from "../../../../config/api";
+import { api, setAuthorisationHeaders } from "../../../../config/api";
 import routes from "../../../../constants/routes";
 
 const validateEmail = value => {
@@ -63,9 +63,10 @@ const formConfig = {
   },
   handleSubmit: async (values, { setFieldError }) => {
     try {
-      const { data } = await api.userService.post("users/register", values);
+      const { data } = await api.userService.post("/users/register", values);
 
       currentUser.set({ token: data.token });
+      setAuthorisationHeaders(data.token);
 
       navigate("/app");
     } catch (error) {

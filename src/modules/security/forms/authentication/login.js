@@ -9,7 +9,7 @@ import get from "lodash/get";
 import { navigate } from "@reach/router";
 import currentUser from "../../../core/utils/current-user";
 // TODO: figure out where to put these
-import { api } from "../../../../config/api";
+import { api, setAuthorisationHeaders } from "../../../../config/api";
 
 const formConfig = {
   validate: values => {
@@ -17,8 +17,10 @@ const formConfig = {
   },
   handleSubmit: async (values, { setFieldError, setFormError, props }) => {
     try {
-      const { data } = await api.userService.post("/login", values);
+      const { data } = await api.userService.post("/users/login", values);
+
       currentUser.set({ token: data.token });
+      setAuthorisationHeaders(data.token);
 
       if (get(props, "location.state.fromUrl")) {
         navigate(props.location.state.fromUrl);

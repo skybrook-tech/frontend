@@ -1,13 +1,19 @@
 import axios from "axios";
 
-const mockendApiConfig = { baseURL: process.env.REACT_APP_MOCKEND_URL };
+const services = {
+  projects: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL },
+  users: { baseURL: process.env.REACT_APP_USER_SERVICE_URL }
+};
 
-const api = { mockend: axios.create(mockendApiConfig) };
+const api = {
+  projectService: axios.create(services.projects),
+  userService: axios.create(services.users)
+};
 
-const setHeaders = headers => {
-  headers.forEach(({ header, value }) => {
-    api.defaults.headers.common[header] = value;
+const setAuthorisationHeaders = ({ token }) => {
+  ["projectService", "userService"].forEach(service => {
+    api[service].defaults.headers.common.Authorization = `Bearer ${token}`;
   });
 };
 
-export { mockendApiConfig, api, setHeaders };
+export { services, api, setAuthorisationHeaders };
