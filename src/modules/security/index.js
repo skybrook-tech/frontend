@@ -1,5 +1,5 @@
 import React from "react";
-import { Router } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 import SecurityScreenLogin from "./screens/login";
 import SecurityScreenSignup from "./screens/signup";
 import Public404 from "../core/screens/404";
@@ -30,7 +30,6 @@ const AuthModule = ({
       >
         {privateRoutes}
       </PrivateRoutes>
-
       <LoginScreen path="/login" />
       <SignupScreen path="/signup" />
     </Router>

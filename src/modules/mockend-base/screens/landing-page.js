@@ -14,4 +14,10 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+const landingPage = {
+  Component: LandingPage,
+  name: "LandingPAge",
+  route: "/"
+};
+
+export default landingPage;
