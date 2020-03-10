@@ -2,7 +2,7 @@ import axios from "axios";
 
 const services = {
   projects: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL },
-  users: { baseURL: process.env.REACT_APP_USER_SERVICE_URL }
+  users: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL }
 };
 
 const api = {

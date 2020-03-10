@@ -1,29 +1,29 @@
-import React from "react";
+import { lazy } from "react";
+import SideNavLayout from "../core/layouts/side-nav";
+import createModule from "../core/create-module";
+
+// submodules
 import contentManager from "../content-manager";
-import { CoreLayoutHandler } from "../core";
-// import SideBarHeader from "./components/side-bar-header";
-import { Redirect, Router } from "@reach/router";
 
-const modules = [contentManager];
-
-const ProjectInitPage = () => {
-  return <div>project init page</div>;
+// screens
+const projectInitScreen = {
+  Component: lazy(() => import("./screens/project-init")),
+  name: "ProjectInit",
+  path: ""
 };
 
-const project = {
-  Component: props => {
-    console.log({ props });
-    return (
-      <Router>
-        <ProjectInitPage path="/" />
-        <CoreLayoutHandler modules={modules} path=":projectId/*" />
-        <Redirect from="app" to="projects" />
-      </Router>
-    );
-  },
+export default createModule({
   name: "ProjectManager",
-  route: "projects/*",
-  requiresAuth: true
-};
-
-export default project;
+  path: "projects",
+  // exact: true,
+  // scope:{get:()}
+  modules: [
+    projectInitScreen,
+    {
+      name: "Project",
+      path: ":projectId",
+      Layout: SideNavLayout,
+      modules: [contentManager]
+    }
+  ]
+});

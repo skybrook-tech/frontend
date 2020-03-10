@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
 import Menu from "../../ui/menu";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 const sideMenuStyles = css`
   &&& {
@@ -24,24 +24,16 @@ const isActive = ({ isCurrent }) => {
   return isCurrent ? { className: "item active" } : {};
 };
 
-const SideMenu = ({ modules = [] }) => {
+const SideMenu = ({ links = [] }) => {
   return (
     <Menu vertical secondary css={sideMenuStyles} className="p1">
-      <Menu.Item
-        as={Link}
-        name={"Home"}
-        getProps={isActive}
-        to={"./"}
-        key={"./"}
-      />
-
-      {modules.map(({ name, route }) => (
+      {links.map(({ label, to }) => (
         <Menu.Item
           as={Link}
-          name={name}
+          name={label}
           getProps={isActive}
-          to={route}
-          key={route}
+          to={to}
+          key={to}
         />
       ))}
     </Menu>

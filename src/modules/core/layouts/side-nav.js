@@ -50,13 +50,14 @@ const CloseMenuIcon = () => <Icon name="bars transition__grow-sml" />;
 const CoreLayoutSideNav = props => {
   const {
     children,
-    modules,
+    links,
     Header = DefaultHeader,
     SideMenu = DefaultSideMenu,
     UserDropdown = DefaultUserDropdown,
     sideBarWidth = "244px"
   } = props;
 
+  console.log({ props });
   const [visible, setVisible] = useState(true);
   const [replaced, setReplaced] = useState(false);
 
@@ -100,7 +101,7 @@ const CoreLayoutSideNav = props => {
               >
                 <div className="absolute fit-parent">
                   <SideMenu
-                    modules={modules}
+                    links={links}
                     visible={visible}
                     setVisible={setVisible}
                   />

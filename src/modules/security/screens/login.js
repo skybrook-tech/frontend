@@ -2,14 +2,13 @@
 import { jsx } from "@emotion/core";
 import LoginForm from "../forms/authentication/login";
 import Header from "../../core/ui/header";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 const containerStyles = theme => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  alignItems: "center",
-  backgroundImage: theme.colors.mainGradient
+  alignItems: "center"
 });
 
 const Login = props => {

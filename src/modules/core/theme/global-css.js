@@ -52,23 +52,7 @@ const utils = css`
 `;
 
 const globalCSS = theme => css`
-  body,
-  html,
-  #root,
-  .Screen,
-  .App {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  html {
-    box-sizing: border-box;
-  }
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
+  
   :root {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

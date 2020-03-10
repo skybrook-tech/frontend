@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import Header from "../../../core/ui/header";
 import Button from "../../../core/ui/button";
 import Menu from "../../../core/ui/menu";
@@ -35,7 +35,7 @@ const TopBar = ({ primary, linkState }) => {
         <Link
           data-testid="topBarNav-loginButton"
           to="/login"
-          state={linkState}
+          // state={linkState}
           css={{ "&&&": { display: "flex" } }}
         >
           <Menu.Item>
@@ -43,7 +43,7 @@ const TopBar = ({ primary, linkState }) => {
           </Menu.Item>
         </Link>
 
-        <Link to="/signup" state={linkState}>
+        <Link to="/signup">
           <Menu.Item>
             <Button data-testid="topBarNav-signupButton" color="white">
               Sign Up

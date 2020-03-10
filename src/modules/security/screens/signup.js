@@ -2,14 +2,13 @@
 import { jsx } from "@emotion/core";
 import SignupForm from "../forms/authentication/signup";
 import Header from "../../../modules/core/ui/header";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 const containerStyles = theme => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  alignItems: "center",
-  backgroundImage: theme.colors.mainGradient
+  alignItems: "center"
 });
 
 const Signup = props => {

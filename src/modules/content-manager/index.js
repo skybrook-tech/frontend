@@ -7,7 +7,7 @@ const ModuleA = {
     return <div css>Content Creator</div>;
   },
   name: "Content Creator",
-  route: "content-creator"
+  path: "content-creator"
 };
 
 export default ModuleA;

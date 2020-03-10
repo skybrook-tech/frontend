@@ -3,7 +3,6 @@ import { jsx } from "@emotion/core";
 import { Icon, Label, Dropdown, Image } from "semantic-ui-react";
 import currentUser from "../utils/current-user";
 
-// import routes from "../constants/routes";
 import { navigate } from "@reach/router";
 
 const UserDropdown = () => {

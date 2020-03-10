@@ -1,9 +1,24 @@
-import createApp from "../core";
+import createModule from "../core/create-module";
+import { lazy } from "react";
 
-// Modules
-import projectModule from "../project-manager";
+// submodules
+import projectManager from "../project-manager";
+import security from "../security";
 
 // Screens
-import landingPage from "./screens/landing-page";
+const landingPage = {
+  Component: lazy(() => import("./screens/landing-page")),
+  name: "LandingPAge",
+  path: ""
+};
 
-export default createApp({ modules: [landingPage, projectModule] });
+const moduleContainerStyles = theme => ({
+  backgroundImage: theme.colors.mainGradient
+});
+
+export default createModule({
+  name: "MockendBase",
+  path: "",
+  modules: [landingPage, projectManager, security],
+  moduleContainerStyles
+});

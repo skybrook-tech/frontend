@@ -1,12 +1,25 @@
 import React from "react";
+import createApp from "./modules/core/create-app";
+import MockendBase from "./modules/mockend-base";
 import ReactDOM from "react-dom";
-import App from "./modules/mockend-base";
 import * as serviceWorker from "./serviceWorker";
-import store from "./store";
+
+import globalCSS from "./modules/core/theme/global-css";
+import defaultTheme from "./modules/core/theme/theme";
+import { Global } from "@emotion/core";
+import { ThemeProvider } from "emotion-theming";
+import merge from "lodash/merge";
+import "semantic-ui-css/semantic.min.css";
+
+const Provider = ({ children }) => (
+  <ThemeProvider theme={merge(defaultTheme)}>
+    <Global styles={globalCSS} />
+    {children}
+  </ThemeProvider>
+);
+
+serviceWorker.unregister();
+
+const App = createApp({ modules: [MockendBase], Provider });
 
 ReactDOM.render(<App />, document.getElementById("root"));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
