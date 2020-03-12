@@ -6,7 +6,8 @@ import Form from "../../../core/ui/form";
 import Card from "../../../core/ui/card";
 import { withFormik } from "formik";
 import get from "lodash/get";
-import { navigate } from "@reach/router";
+import { withRouter } from "react-router-dom";
+
 import currentUser from "../../../core/utils/current-user";
 // TODO: figure out where to put these
 import { api, setAuthorisationHeaders } from "../../../../config/api";
@@ -17,15 +18,16 @@ const formConfig = {
   },
   handleSubmit: async (values, { setFieldError, setFormError, props }) => {
     try {
+      const { history } = props;
       const { data } = await api.userService.post("/users/login", values);
 
       currentUser.set({ token: data.token });
       setAuthorisationHeaders(data.token);
 
       if (get(props, "location.state.fromUrl")) {
-        navigate(props.location.state.fromUrl);
+        history.push(props.location.state.fromUrl);
       } else {
-        navigate("app");
+        history.push("app");
       }
     } catch (error) {
       const responseError = get(error, "response.data.error");
@@ -120,4 +122,4 @@ const SignupForm = props => {
   );
 };
 
-export default withFormik(formConfig)(SignupForm);
+export default withRouter(withFormik(formConfig)(SignupForm));

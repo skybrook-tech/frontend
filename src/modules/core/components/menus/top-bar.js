@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import Header from "../../ui/header";
 import Button from "../../ui/button";
 import Menu from "../../ui/menu";
 
 const TopBar = ({ primary, header = "BrandGoesHere", linkState }) => {
-  console.log({ linkState });
   return (
     <Menu
       size="large"

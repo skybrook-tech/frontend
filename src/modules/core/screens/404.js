@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import TopBarMenu from "../components/menus/top-bar";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 const NotFound = props => {
   const { TopBar = TopBarMenu, location } = props;

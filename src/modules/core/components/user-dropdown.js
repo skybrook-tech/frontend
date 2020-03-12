@@ -2,10 +2,11 @@
 import { jsx } from "@emotion/core";
 import { Icon, Label, Dropdown, Image } from "semantic-ui-react";
 import currentUser from "../utils/current-user";
-
-import { navigate } from "@reach/router";
+import { useHistory } from "react-router-dom";
 
 const UserDropdown = () => {
+  const history = useHistory();
+
   const options = [
     { key: "settings", icon: "user", text: "Profile Settings" },
     {
@@ -14,7 +15,7 @@ const UserDropdown = () => {
       text: "Logout",
       onClick: () => {
         currentUser.set({ token: null });
-        navigate("/");
+        history.push("/");
       }
     }
   ];

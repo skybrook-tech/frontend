@@ -5,13 +5,12 @@ import Card from "../../../core/ui/card";
 import Form from "../../../core/ui/form";
 import { withFormik } from "formik";
 import get from "lodash/get";
-import { navigate } from "@reach/router";
+import { withRouter } from "react-router-dom";
 import currentUser from "../../../core/utils/current-user";
 import { getFieldPropsWithErrors } from "../../../core/utils/formik";
 import isRequired from "../../../core/utils/validations/is-required";
 // TODO: figure out where to put these
 import { api, setAuthorisationHeaders } from "../../../../config/api";
-import routes from "../../../../constants/routes";
 
 const validateEmail = value => {
   let error;
@@ -61,14 +60,15 @@ const formConfig = {
 
     return { ...errors, ...requiredFieldErrors };
   },
-  handleSubmit: async (values, { setFieldError }) => {
+  handleSubmit: async (values, { setFieldError, props }) => {
     try {
+      const { history } = props;
       const { data } = await api.userService.post("/users/register", values);
 
       currentUser.set({ token: data.token });
       setAuthorisationHeaders(data.token);
 
-      navigate("/app");
+      history.push("/app");
     } catch (error) {
       const responseError = get(error, "response.data.error");
 
@@ -200,4 +200,4 @@ const SignupForm = props => {
   );
 };
 
-export default withFormik(formConfig)(SignupForm);
+export default withRouter(withFormik(formConfig)(SignupForm));
