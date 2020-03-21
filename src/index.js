@@ -10,6 +10,7 @@ import { Global } from "@emotion/core";
 import { ThemeProvider } from "emotion-theming";
 import merge from "lodash/merge";
 import "semantic-ui-css/semantic.min.css";
+import orm from "./modules/core/utils/orm/orm-plugin";
 
 const Provider = ({ children }) => (
   <ThemeProvider theme={merge(defaultTheme)}>
@@ -20,6 +21,6 @@ const Provider = ({ children }) => (
 
 serviceWorker.unregister();
 
-const App = createApp({ modules: [MockendBase], Provider });
+const App = createApp({ modules: [MockendBase], Provider, plugins: [orm] });
 
 ReactDOM.render(<App />, document.getElementById("root"));

@@ -1,13 +1,14 @@
 import axios from "axios";
 
 const services = {
-  projects: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL },
+  projects: {
+    v1: { baseURL: `${process.env.REACT_APP_PROJECT_SERVICE_URL}/v1` }
+  },
   users: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL }
 };
 
 const api = {
-  projectService: axios.create(services.projects),
-  userService: axios.create(services.users)
+  services
 };
 
 const setAuthorisationHeaders = ({ token }) => {

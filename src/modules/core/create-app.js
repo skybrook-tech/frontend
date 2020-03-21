@@ -5,77 +5,99 @@ import { createSlice, configureStore, combineReducers } from "@reduxjs/toolkit";
 import { BrowserRouter as Router } from "react-router-dom";
 import BaseComponent from "./base-component";
 
-const createApp = (config = {}) => {
-  const { modules, Provider = ({ children }) => children } = config;
+const processModule = (reactModules, config) => {
+  const { name, setup, modules: submodules = [] } = config;
 
-  console.log({ modules });
+  if (setup) {
+    setup(reactModules);
+  }
 
-  const ModelReducers = {};
-  const ModuleReducers = {};
-  const ModuleRegistry = {};
-  const ModuleActions = {};
+  if (config.module) {
+    const {
+      Layout,
+      reducer,
+      modules: ignore,
+      moduleContainerStyles,
+      models,
+      setup,
+      ...initialState
+    } = config;
 
-  const processModule = config => {
-    const { name, models, reducer, modules: submodules = [] } = config;
-
-    if (reducer) {
-      ModuleReducers[name] = reducer;
-    }
-
-    if (config.module) {
-      const {
-        Layout,
-        reducer,
-        modules: ignore,
-        moduleContainerStyles,
-        ...initialState
-      } = config;
-
-      const ModuleSlice = createSlice({
-        name,
-        initialState: { ...initialState, mock: false },
-        reducers: {
-          setMock: (state, { payload }) => {
-            state.mock = payload;
-          }
+    const ModuleSlice = createSlice({
+      name,
+      initialState: { ...initialState, mock: false },
+      reducers: {
+        setMock: (state, { payload }) => {
+          state.mock = payload;
         }
-      });
+      }
+    });
 
-      ModuleRegistry[name] = ModuleSlice.reducer;
-      ModuleActions[name] = ModuleSlice.actions;
-    }
+    reactModules._private.registerModule(name, ModuleSlice.reducer);
+    reactModules._private.addModuleActions(name, ModuleSlice.actions);
+  }
 
-    submodules.forEach(processModule);
+  submodules.forEach(submodule => processModule(reactModules, submodule));
+};
+
+const createApp = (config = {}) => {
+  const {
+    modules = [],
+    Provider = ({ children }) => children,
+    plugins = []
+  } = config;
+
+  const pluginCallbacks = [];
+  const setup = {
+    reducers: {},
+    ModuleRegistry: {},
+    ModuleActions: {}
   };
 
-  modules.forEach(processModule);
+  const reactModules = {
+    addReducer: (name, reducer) => {
+      if (setup.reducers[name]) {
+        throw new Error(`A reducer with the name "${name}" already exists.`);
+      }
+      setup.reducers[name] = reducer;
+    },
+    _private: {
+      registerModule: (name, reducer) => {
+        setup.ModuleRegistry[name] = reducer;
+      },
+      addModuleActions: (name, actions) => {
+        setup.ModuleActions[name] = actions;
+      }
+    }
+  };
+
+  modules.forEach(Module => processModule(reactModules, Module));
+
+  plugins.forEach(plugin => {
+    const pluginCallback = plugin(reactModules, modules);
+    pluginCallbacks.push(pluginCallback);
+  });
 
   const store = configureStore({
     reducer: {
-      ...ModelReducers,
-      ...ModuleReducers,
-      ModuleRegistry: combineReducers(ModuleRegistry)
+      ...setup.reducers,
+      ModuleRegistry: combineReducers(setup.ModuleRegistry)
     }
   });
 
-  const runInit = ({ init, modules: submodules = [] }) => {
-    if (init) init({ store });
-
-    submodules.forEach(runInit);
-  };
-
-  modules.forEach(runInit);
-  console.log(store.getState());
+  pluginCallbacks.forEach((pluginCallback = () => null) =>
+    pluginCallback({ store })
+  );
 
   return () => (
     <Provider>
-      <Router>
-        <StoreProvider store={store}>
+      <StoreProvider store={store}>
+        <Router>
           {modules.map(moduleConfig => (
-            <BaseComponent config={moduleConfig} />
+            <BaseComponent key={moduleConfig.name} config={moduleConfig} />
           ))}
-        </StoreProvider>
-      </Router>
+        </Router>
+      </StoreProvider>
     </Provider>
   );
 };

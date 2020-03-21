@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import SideNavLayout from "../core/layouts/side-nav";
 import createModule from "../core/create-module";
-
+import models from "./models";
 // submodules
 import contentManager from "../content-manager";
 
@@ -15,8 +15,10 @@ const projectInitScreen = {
 export default createModule({
   name: "ProjectManager",
   path: "projects",
-  // exact: true,
-  // scope:{get:()}
+  requiresAuth: true,
+  // redirect: ({ store }) => {
+  //   if (!store.getState().Security.isAuthenticated) return "/login";
+  // },
   modules: [
     projectInitScreen,
     {
@@ -25,5 +27,6 @@ export default createModule({
       Layout: SideNavLayout,
       modules: [contentManager]
     }
-  ]
+  ],
+  models
 });

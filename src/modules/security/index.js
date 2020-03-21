@@ -18,8 +18,7 @@ export default createModule({
   name: "Security",
   path: "",
   modules: [loginScreen, signupScreen],
-  reducer: SecurityStore.reducer,
-  init: ({ store }) => {
-    store.dispatch(SecurityStore.actions.setIsLoggedIn(true));
+  setup: reactModules => {
+    reactModules.addReducer("Security", SecurityStore.reducer);
   }
 });

@@ -1,9 +1,17 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { Suspense } from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  useRouteMatch,
+  useHistory,
+  useLocation
+} from "react-router-dom";
 import "./default.css";
 import { Loader } from "semantic-ui-react";
+import isFunction from "lodash/isFunction";
+import { useStore } from "react-redux";
 
 const createPath = ({ path }, match = {}) => {
   let PATH = path;
@@ -62,11 +70,21 @@ const Routes = ({
   );
 };
 
-const BaseComponent = props => {
-  const { config = {} } = props;
-  const { Layout } = config;
+const createLinks = ({ modules, match }) =>
+  modules.map(linkConfig => {
+    const { name, path, navLabel } = linkConfig;
 
-  const modules = config.modules.reduce((modulesArray, nextModule) => {
+    const label = navLabel || name || path.replace("/", "") || "HOME";
+
+    return {
+      to: `${match ? match.url : ""}/${path}`,
+      config: linkConfig,
+      label
+    };
+  });
+
+const processModules = config =>
+  config.modules.reduce((modulesArray, nextModule) => {
     const currentModule = { ...nextModule };
 
     if (currentModule.module && !currentModule.path && config.name) {
@@ -90,19 +108,26 @@ const BaseComponent = props => {
     return modulesArray;
   }, []);
 
+const BaseComponent = props => {
+  const { config = {} } = props;
+  const { Layout, redirect } = config;
+
+  const modules = processModules(config);
+
   const match = useRouteMatch();
+  const store = useStore();
+  const location = useLocation();
+  const history = useHistory();
 
-  const links = modules.map(linkConfig => {
-    const { name, path, navLabel } = linkConfig;
+  const links = createLinks({ match, modules });
 
-    const label = navLabel || name || path.replace("/", "") || "HOME";
+  const redirectPath = isFunction(redirect)
+    ? redirect({ store, match, location })
+    : redirect;
 
-    return {
-      to: `${match ? match.url : ""}/${path}`,
-      config: linkConfig,
-      label
-    };
-  });
+  if (redirectPath) {
+    history.push(redirectPath);
+  }
 
   if (Layout) {
     return (
