@@ -8,6 +8,7 @@ const loginScreen = {
   name: "Login",
   path: "login"
 };
+
 const signupScreen = {
   Component: lazy(() => import("./screens/signup")),
   name: "Signup",
@@ -18,7 +19,8 @@ export default createModule({
   name: "Security",
   path: "",
   modules: [loginScreen, signupScreen],
-  setup: reactModules => {
+  actions: SecurityStore.actions,
+  setup(reactModules) {
     reactModules.addReducer("Security", SecurityStore.reducer);
   }
 });

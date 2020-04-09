@@ -19,8 +19,7 @@ const ProjectPage = props => {
     // Project.actions().create({ id: 2, foo: "bar" });
     // Project.actions().update({ id: 1, foo: "foo" });
     // Project.actions().delete(2);
-    Project.api().destroy(39);
-
+    // Project.api().destroy(39);
     // Project.api()
     //   .fetchAll()
     //   .then(res => {

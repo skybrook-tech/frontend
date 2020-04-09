@@ -1,5 +1,6 @@
 import get from "lodash/get";
 import decodeJWT from "jwt-decode";
+
 const getUser = () => {
   let currentUser = localStorage.getItem("currentUser");
 

@@ -121,6 +121,7 @@ const BaseComponent = props => {
 
   const links = createLinks({ match, modules });
 
+  console.log(store.getState());
   const redirectPath = isFunction(redirect)
     ? redirect({ store, match, location })
     : redirect;

@@ -26,6 +26,8 @@ const StyledHeader = props => {
   );
 };
 
+StyledHeader.propTypes = { color: ["white"] };
+
 const AssignedHeader = Object.assign(StyledHeader, Header);
 
 export default AssignedHeader;

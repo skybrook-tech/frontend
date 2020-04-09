@@ -1,125 +1,62 @@
 /** @jsx jsx */
-import { useState } from "react";
-import { jsx } from "@emotion/core";
-import { Message } from "semantic-ui-react";
-import Form from "../../../core/ui/form";
-import Card from "../../../core/ui/card";
-import { withFormik } from "formik";
-import get from "lodash/get";
+import { jsx, css } from "@emotion/core";
+import Form from "../../../core/ui/forms/form";
 import { withRouter } from "react-router-dom";
+import SemanticFormBuilder from "../../../core/ui/forms/formig";
 
-import currentUser from "../../../core/utils/current-user";
-// TODO: figure out where to put these
-import { api, setAuthorisationHeaders } from "../../../../config/api";
+const formStyles = css`
+  &&& {
+    width: 300px;
 
-const formConfig = {
-  validate: values => {
-    return Form.validations.isRequired(values, ["email", "password"]);
-  },
-  handleSubmit: async (values, { setFieldError, setFormError, props }) => {
-    try {
-      const { history } = props;
-      const { data } = await api.userService.post("/users/login", values);
-
-      currentUser.set({ token: data.token });
-      setAuthorisationHeaders(data.token);
-
-      if (get(props, "location.state.fromUrl")) {
-        history.push(props.location.state.fromUrl);
-      } else {
-        history.push("app");
-      }
-    } catch (error) {
-      const responseError = get(error, "response.data.error");
-
-      if (responseError) {
-        setFieldError("response", responseError);
-      } else {
-        setFieldError("response", error);
-      }
+    & button.submit {
+      width: 100%;
     }
   }
+`;
+
+const formConfig = {
+  form: {
+    header: "Log in to MockEnd",
+    submitButtonConfig: { text: "Login", className: "primary" },
+    onSubmit: async (values, formik) => {
+      const { dispatch, config } = formik.props;
+
+      await dispatch(config.actions.onLogin(values, formik));
+    },
+    validate: values => {
+      return Form.validations.isRequired(values, ["email", "password"]);
+    },
+    name: "loginPage-authForm"
+  },
+  fields: [
+    {
+      type: "Input",
+      name: "email",
+      props: {
+        placeholder: "Enter your email"
+      }
+    },
+    {
+      type: "PasswordInput",
+      name: "password",
+      props: {
+        placeholder: "Enter your password",
+        type: "password"
+      }
+    }
+  ]
 };
 
-const getFieldPropsWithErrors = (name, formik, initialValue) => {
-  const { submitCount, touched, errors } = formik;
-
-  const error = touched[name] || submitCount ? errors[name] : null;
-
-  return {
-    name,
-    ...formik.getFieldProps(name),
-    error
-  };
-};
-
-const SignupForm = props => {
-  const { handleSubmit, isSubmitting, errors } = props;
-  const [showPassword, setShowPassword] = useState(false);
-
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
+const LoginForm = props => {
   return (
-    <Form
-      css={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "300px"
-      }}
-      error={errors.response}
-      onSubmit={handleSubmit}
-      loading={isSubmitting}
-      data-testid="loginPage-authForm"
-    >
-      <Card raised fluid>
-        <Card.Content>
-          <Card.Header textAlign="center" color="secondary">
-            Log In To MockEnd
-          </Card.Header>
-
-          <Card.Description>
-            <Form.Input
-              placeholder="Enter your email"
-              {...getFieldPropsWithErrors("email", props)}
-              data-testid="loginPage-authForm-emailInput"
-            />
-            <Form.Input
-              placeholder="Enter your password"
-              {...getFieldPropsWithErrors("password", props)}
-              type={showPassword ? "text" : "password"}
-              icon={{
-                name: "eye",
-                circular: true,
-                link: true,
-                onClick: togglePasswordVisibility
-              }}
-              data-testid="loginPage-authForm-passwordInput"
-            />
-
-            <Message
-              error
-              content={get(errors, "response.message")}
-              data-testid="loginPage-authForm-responseError"
-            />
-          </Card.Description>
-        </Card.Content>
-
-        <Card.Content extra>
-          <Form.Button
-            data-testid="loginPage-authForm-submitButton"
-            raised
-            animated
-            fluid
-            primary
-            type="submit"
-          >
-            Log In
-          </Form.Button>
-        </Card.Content>
-      </Card>
-    </Form>
+    <SemanticFormBuilder
+      css={formStyles}
+      raised
+      card
+      {...props}
+      formConfig={formConfig}
+    />
   );
 };
 
-export default withRouter(withFormik(formConfig)(SignupForm));
+export default withRouter(LoginForm);

@@ -16,9 +16,9 @@ export default createModule({
   name: "ProjectManager",
   path: "projects",
   requiresAuth: true,
-  // redirect: ({ store }) => {
-  //   if (!store.getState().Security.isAuthenticated) return "/login";
-  // },
+  redirect: ({ store }) => {
+    if (!store.getState().Security.isAuthenticated) return "/login";
+  },
   modules: [
     projectInitScreen,
     {

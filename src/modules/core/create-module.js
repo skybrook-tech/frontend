@@ -14,15 +14,22 @@ const createModule = (config = {}) => {
       subModule.exact = true;
     }
 
+    if (!subModule.module) {
+      subModule = { ...subModule, actions: config.actions };
+    }
+
     return { ...subModule };
   });
 
-  return {
+  const moduleConfig = {
     name,
     module: true,
     path: createPath(name),
+    setup() {},
     ...config
   };
+
+  return moduleConfig;
 };
 
 export default createModule;

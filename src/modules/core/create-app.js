@@ -8,8 +8,8 @@ import BaseComponent from "./base-component";
 const processModule = (reactModules, config) => {
   const { name, setup, modules: submodules = [] } = config;
 
-  if (setup) {
-    setup(reactModules);
+  if (config.setup) {
+    config.setup(reactModules);
   }
 
   if (config.module) {
@@ -20,6 +20,8 @@ const processModule = (reactModules, config) => {
       moduleContainerStyles,
       models,
       setup,
+      redirect,
+      actions,
       ...initialState
     } = config;
 
