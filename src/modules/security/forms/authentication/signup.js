@@ -2,9 +2,10 @@
 import { jsx, css } from "@emotion/core";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import SemanticFormBuilder from "../../../core/ui/forms/formig";
+import SemanticFormBuilder from "@core/ui/forms/formig";
 import { Rating, Label } from "semantic-ui-react";
-import isRequired from "../../../core/utils/validations/is-required";
+import isRequired from "@core/utils/validations/is-required";
+import globalsCache from "@core/globals-cache";
 
 const formStyles = css`
   &&& {
@@ -74,9 +75,10 @@ const formConfig = {
     header: "Try Mockend for free",
     submitButtonConfig: { text: "Create free account", className: "primary" },
     onSubmit: async (values, formik) => {
-      const { dispatch, config } = formik.props;
+      const { dispatch } = formik.props;
+      const { actions } = globalsCache.get("Security");
 
-      await dispatch(config.actions.onSignup(values, formik));
+      await dispatch(actions.onSignup(values, formik));
     },
     validate: values => {
       const { email, password } = values;
@@ -161,8 +163,6 @@ const SignupForm = props => {
   return (
     <SemanticFormBuilder
       css={formStyles}
-      raised
-      card
       formConfig={formConfig}
       location={location}
       history={history}

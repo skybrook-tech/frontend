@@ -1,6 +1,6 @@
 import { fk, many, attr } from "redux-orm";
-import ExtendedModel from "../../core/utils/orm/extended-model";
-import { api } from "../../../config/api";
+import ExtendedModel from "@core/utils/orm/extended-model";
+import { api } from "@config/api";
 
 class Project extends ExtendedModel {
   static modelName = "Project";

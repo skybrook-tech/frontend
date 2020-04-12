@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import SignupForm from "../forms/authentication/signup";
-import Header from "../../../modules/core/ui/header";
+import Header from "@core/ui/header";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 

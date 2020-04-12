@@ -112,7 +112,6 @@ const Radio = withLabel(props => (
 ));
 
 function RadioGroup({ options = [], FieldComponents, ...rest }) {
-  console.log(this);
   return (
     <FieldComponents.Group className="formig radio-group">
       <label>{rest.label}</label>

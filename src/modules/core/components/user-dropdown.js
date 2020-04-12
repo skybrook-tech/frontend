@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { Icon, Label, Dropdown, Image } from "semantic-ui-react";
-import currentUser from "../utils/current-user";
+import currentUser from "@core/utils/current-user";
 import { useHistory } from "react-router-dom";
 
 const UserDropdown = () => {

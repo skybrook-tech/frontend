@@ -1,6 +1,6 @@
 import { attr } from "redux-orm";
-import createModel from "../modules/core/utils/create-model";
-import { api } from "../../../config/api";
+import createModel from "@core/utils/create-model";
+import { api } from "@config/api";
 
 export default createModel({
   name: "Columns",

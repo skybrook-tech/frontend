@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { useState } from "react";
 import { jsx, css } from "@emotion/core";
-import PropTypes from "prop-types";
 import DefaultSideMenu from "../components/menus/side-menu";
 import DefaultUserDropdown from "../components/user-dropdown";
 import { Transition } from "react-transition-group-v2";
@@ -57,7 +56,6 @@ const CoreLayoutSideNav = props => {
     sideBarWidth = "244px"
   } = props;
 
-  console.log({ props });
   const [visible, setVisible] = useState(true);
   const [replaced, setReplaced] = useState(false);
 

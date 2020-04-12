@@ -1,6 +1,6 @@
 import { lazy } from "react";
-import SideNavLayout from "../core/layouts/side-nav";
-import createModule from "../core/create-module";
+import SideNavLayout from "@core/layouts/side-nav";
+import createModule from "@core/create-module";
 import models from "./models";
 // submodules
 import contentManager from "../content-manager";
@@ -16,9 +16,6 @@ export default createModule({
   name: "ProjectManager",
   path: "projects",
   requiresAuth: true,
-  redirect: ({ store }) => {
-    if (!store.getState().Security.isAuthenticated) return "/login";
-  },
   modules: [
     projectInitScreen,
     {

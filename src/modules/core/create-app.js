@@ -1,12 +1,25 @@
 import React from "react";
 import { Provider as StoreProvider } from "react-redux";
-
-import { createSlice, configureStore, combineReducers } from "@reduxjs/toolkit";
+import globalsCache from "./globals-cache";
+import {
+  createSlice,
+  configureStore,
+  combineReducers,
+  getDefaultMiddleware
+} from "@reduxjs/toolkit";
 import { BrowserRouter as Router } from "react-router-dom";
 import BaseComponent from "./base-component";
 
 const processModule = (reactModules, config) => {
-  const { name, setup, modules: submodules = [] } = config;
+  const { name, modules: submodules = [] } = config;
+
+  if (config.module) {
+    const cache = {};
+
+    cache.actions = config.actions || {};
+
+    globalsCache.set(name, cache);
+  }
 
   if (config.setup) {
     config.setup(reactModules);
@@ -51,6 +64,7 @@ const createApp = (config = {}) => {
 
   const pluginCallbacks = [];
   const setup = {
+    middleware: [],
     reducers: {},
     ModuleRegistry: {},
     ModuleActions: {}
@@ -62,6 +76,9 @@ const createApp = (config = {}) => {
         throw new Error(`A reducer with the name "${name}" already exists.`);
       }
       setup.reducers[name] = reducer;
+    },
+    addReduxMiddleware: (middleware = []) => {
+      setup.middleware.push(middleware);
     },
     _private: {
       registerModule: (name, reducer) => {
@@ -84,12 +101,15 @@ const createApp = (config = {}) => {
     reducer: {
       ...setup.reducers,
       ModuleRegistry: combineReducers(setup.ModuleRegistry)
-    }
+    },
+    middleware: [...getDefaultMiddleware(), ...setup.middleware]
   });
 
   pluginCallbacks.forEach((pluginCallback = () => null) =>
     pluginCallback({ store })
   );
+
+  globalsCache.set("store", store);
 
   return () => (
     <Provider>

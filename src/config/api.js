@@ -4,7 +4,9 @@ const services = {
   projects: {
     v1: { baseURL: `${process.env.REACT_APP_PROJECT_SERVICE_URL}/v1` }
   },
-  users: { baseURL: process.env.REACT_APP_PROJECT_SERVICE_URL }
+  users: {
+    v1: { baseURL: `${process.env.REACT_APP_USER_SERVICE_URL}/v1` }
+  }
 };
 
 const api = {

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-import Menu from "../../ui/menu";
+import Menu from "@ui/menu";
 import { Link } from "react-router-dom";
 
 const sideMenuStyles = css`

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { jsx } from "@emotion/core";
 import { Message } from "semantic-ui-react";
-import createFormBuilder from "../../utils/formig/create-form-builder";
+import createFormBuilder from "@core/utils/formig/create-form-builder";
 import Form from "./form";
 
 function RadioGroup({ options = [], FieldComponents, ...rest }) {

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import {
   Switch,
   Route,
@@ -11,7 +11,7 @@ import {
 import "./default.css";
 import { Loader } from "semantic-ui-react";
 import isFunction from "lodash/isFunction";
-import { useStore } from "react-redux";
+import { useStore, useDispatch, useSelector } from "react-redux";
 
 const createPath = ({ path }, match = {}) => {
   let PATH = path;
@@ -23,7 +23,7 @@ const createPath = ({ path }, match = {}) => {
   return `${match ? match.path : ""}${PATH}`;
 };
 
-const defaultLazyLoadingFallback = (
+const DefaultLazyLoadingFallback = () => (
   <div className="fit-parent flex-center">
     <Loader active inverted size="massive" />
   </div>
@@ -32,7 +32,7 @@ const defaultLazyLoadingFallback = (
 const Routes = ({
   modules,
   routes = [],
-  LazyLoadingFallback = defaultLazyLoadingFallback,
+  LazyLoadingFallback = DefaultLazyLoadingFallback,
   config
 }) => {
   const match = useRouteMatch();
@@ -43,7 +43,7 @@ const Routes = ({
       css={config.moduleContainerStyles}
       className="module"
     >
-      <Suspense fallback={LazyLoadingFallback}>
+      <Suspense fallback={<LazyLoadingFallback />}>
         <Switch>
           {modules.map(submoduleConfig => {
             const { path, name, meta = {}, exact = false } = submoduleConfig;
@@ -110,24 +110,43 @@ const processModules = config =>
 
 const BaseComponent = props => {
   const { config = {} } = props;
-  const { Layout, redirect } = config;
+  const { Layout, redirect, requiresAuth } = config;
 
   const modules = processModules(config);
+
+  const isAuthenticated = useSelector(store => store.Security.isAuthenticated);
+  const tokenChecked = useSelector(store => store.Security.tokenChecked);
 
   const match = useRouteMatch();
   const store = useStore();
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const links = createLinks({ match, modules });
 
-  console.log(store.getState());
   const redirectPath = isFunction(redirect)
     ? redirect({ store, match, location })
     : redirect;
 
-  if (redirectPath) {
-    history.push(redirectPath);
+  useEffect(() => {
+    dispatch({ type: "CHECK_USER_IS_AUTHENTICATED" });
+  }, []);
+
+  useEffect(() => {
+    if (requiresAuth && tokenChecked && !isAuthenticated) {
+      history.push("/login");
+    }
+  }, [requiresAuth, tokenChecked, isAuthenticated]);
+
+  useEffect(() => {
+    if (redirectPath) {
+      history.push(redirectPath);
+    }
+  }, [redirectPath]);
+
+  if (requiresAuth && !tokenChecked) {
+    return <DefaultLazyLoadingFallback />;
   }
 
   if (Layout) {

@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import SecurityStore from "./reducer";
-import createModule from "../core/create-module";
+import securityMiddleware from "./middleware";
+import createModule from "@core/create-module";
 
 // screens
 const loginScreen = {
@@ -22,5 +23,6 @@ export default createModule({
   actions: SecurityStore.actions,
   setup(reactModules) {
     reactModules.addReducer("Security", SecurityStore.reducer);
+    reactModules.addReduxMiddleware(securityMiddleware);
   }
 });

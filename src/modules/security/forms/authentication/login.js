@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-import Form from "../../../core/ui/forms/form";
+import Form from "@core/ui/forms/form";
 import { withRouter } from "react-router-dom";
-import SemanticFormBuilder from "../../../core/ui/forms/formig";
+import SemanticFormBuilder from "@core/ui/forms/formig";
+import { useDispatch, useStore } from "react-redux";
+import globalsCache from "@core/globals-cache";
 
 const formStyles = css`
   &&& {
@@ -16,12 +18,15 @@ const formStyles = css`
 
 const formConfig = {
   form: {
+    props: { className: "card raised" },
     header: "Log in to MockEnd",
     submitButtonConfig: { text: "Login", className: "primary" },
     onSubmit: async (values, formik) => {
-      const { dispatch, config } = formik.props;
+      const { dispatch } = formik.props;
 
-      await dispatch(config.actions.onLogin(values, formik));
+      const { actions } = globalsCache.get("Security");
+
+      await dispatch(actions.onLogin(values, formik));
     },
     validate: values => {
       return Form.validations.isRequired(values, ["email", "password"]);
@@ -32,9 +37,7 @@ const formConfig = {
     {
       type: "Input",
       name: "email",
-      props: {
-        placeholder: "Enter your email"
-      }
+      props: { placeholder: "Enter your email" }
     },
     {
       type: "PasswordInput",
@@ -48,12 +51,17 @@ const formConfig = {
 };
 
 const LoginForm = props => {
+  const dispatch = useDispatch();
+  const store = useStore();
+
   return (
     <SemanticFormBuilder
       css={formStyles}
       raised
       card
       {...props}
+      dispatch={dispatch}
+      store={store}
       formConfig={formConfig}
     />
   );

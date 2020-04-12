@@ -1,6 +1,6 @@
 import { fk, many, attr } from "redux-orm";
-import createModel from "../modules/core/utils/create-model";
-import { api } from "../../../config/api";
+import createModel from "@core/utils/create-model";
+import { api } from "@config/api";
 
 export default createModel({
   name: "Models",
@@ -8,6 +8,5 @@ export default createModel({
   api: api.mockend,
   fields: {
     name: attr()
-    // authors: many("Author", "books")
   }
 });

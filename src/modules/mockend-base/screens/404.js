@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import TopBarMenu from "../components/menus/top-bar";
-import Public404 from "../../core/screens/404";
+import Public404 from "@core/screens/404";
 
 const NotFound = props => {
   return (

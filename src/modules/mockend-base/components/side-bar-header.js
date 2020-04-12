@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import React from "react";
 import { jsx, css } from "@emotion/core";
-import Icon from "../../core/components/icon";
-import SideBarMount from "../../core/components/ui-mounts/sidebar-mount";
+import Icon from "@core/components/icon";
+import SideBarMount from "@core/components/ui-mounts/sidebar-mount";
 import { Transition as TransitionSUI } from "semantic-ui-react";
 import { Transition } from "react-transition-group-v2";
 

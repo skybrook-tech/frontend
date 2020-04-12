@@ -179,7 +179,7 @@ const createFormBuilder = (config = {}) => {
   };
 
   const FormBuilder = props => {
-    const { data, formConfig: FormConfig, ...rest } = props;
+    const { data, formConfig: FormConfig, className, ...rest } = props;
 
     const formConfig = merge(
       {},
@@ -222,88 +222,92 @@ const createFormBuilder = (config = {}) => {
     const hasErrors = !!Object.keys(formik.errors).length;
 
     return (
-      <Form
-        onSubmit={handleSubmit}
-        loading={isSubmitting}
-        hasErrors={hasErrors}
-        {...formConfig.form.props}
-      >
-        <Global styles={defaultStyles} />
+      <div className={className}>
+        <Form
+          onSubmit={handleSubmit}
+          loading={isSubmitting}
+          hasErrors={hasErrors}
+          {...formConfig.form.props}
+        >
+          <Global styles={defaultStyles} />
 
-        <FieldWrapper {...rest}>
-          {header && <div className="header ui secondary center">{header}</div>}
+          <FieldWrapper {...rest}>
+            {header && (
+              <div className="header ui secondary center">{header}</div>
+            )}
 
-          <RenderFields
-            fields={formConfig.fields}
-            formik={formik}
-            formConfig={formConfig}
-          />
-
-          <Message
-            error
-            content={get(formik, "errors.response.message")}
-            data-testid="loginPage-authForm-responseError"
-          />
-        </FieldWrapper>
-
-        <ButtonWrapper {...rest}>
-          {onDelete && (
-            <ButtonHandler
-              buttonConfig={createButtonConfig({
-                handler: onDelete,
-                config: deleteButtonConfig,
-                defaultConfig: { text: "Delete" },
-                formik,
-                props,
-                name: `${formConfig.form.name}-delete-button`
-              })}
-              className="formig button delete"
+            <RenderFields
+              fields={formConfig.fields}
+              formik={formik}
+              formConfig={formConfig}
             />
-          )}
 
-          {onCancel && (
-            <ButtonHandler
-              buttonConfig={createButtonConfig({
-                handler: onCancel,
-                config: cancelButtonConfig,
-                defaultConfig: { text: "Cancel" },
-                formik,
-                props,
-                name: `${formConfig.form.name}-cancel-button`
-              })}
-              className="formig button cancel"
+            <Message
+              error
+              content={get(formik, "errors.response.message")}
+              data-testid="loginPage-authForm-responseError"
             />
-          )}
+          </FieldWrapper>
 
-          {onReset && (
-            <ButtonHandler
-              buttonConfig={createButtonConfig({
-                handler: handleReset,
-                config: resetButtonConfig,
-                defaultConfig: { text: "Reset" },
-                formik,
-                props,
-                name: `${formConfig.form.name}-reset-button`
-              })}
-              className="formig button reset"
-            />
-          )}
+          <ButtonWrapper {...rest}>
+            {onDelete && (
+              <ButtonHandler
+                buttonConfig={createButtonConfig({
+                  handler: onDelete,
+                  config: deleteButtonConfig,
+                  defaultConfig: { text: "Delete" },
+                  formik,
+                  props,
+                  name: `${formConfig.form.name}-delete-button`
+                })}
+                className="formig button delete"
+              />
+            )}
 
-          {onSubmit && (
-            <ButtonHandler
-              buttonConfig={createButtonConfig({
-                handler: handleSubmit,
-                config: submitButtonConfig,
-                defaultConfig: { text: "Submit" },
-                formik,
-                props,
-                name: `${formConfig.form.name}-submit-button`
-              })}
-              className="formig button submit primary"
-            />
-          )}
-        </ButtonWrapper>
-      </Form>
+            {onCancel && (
+              <ButtonHandler
+                buttonConfig={createButtonConfig({
+                  handler: onCancel,
+                  config: cancelButtonConfig,
+                  defaultConfig: { text: "Cancel" },
+                  formik,
+                  props,
+                  name: `${formConfig.form.name}-cancel-button`
+                })}
+                className="formig button cancel"
+              />
+            )}
+
+            {onReset && (
+              <ButtonHandler
+                buttonConfig={createButtonConfig({
+                  handler: handleReset,
+                  config: resetButtonConfig,
+                  defaultConfig: { text: "Reset" },
+                  formik,
+                  props,
+                  name: `${formConfig.form.name}-reset-button`
+                })}
+                className="formig button reset"
+              />
+            )}
+
+            {onSubmit && (
+              <ButtonHandler
+                buttonConfig={createButtonConfig({
+                  handler: handleSubmit,
+                  config: submitButtonConfig,
+                  defaultConfig: { text: "Submit" },
+                  formik,
+                  props,
+                  name: `${formConfig.form.name}-submit-button`
+                })}
+                className="formig button submit primary"
+              />
+            )}
+          </ButtonWrapper>
+        </Form>
+      </div>
     );
   };
 

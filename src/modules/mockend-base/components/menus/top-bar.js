@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
-import Header from "../../../core/ui/header";
-import Button from "../../../core/ui/button";
-import Menu from "../../../core/ui/menu";
+import Header from "@core/ui/header";
+import Button from "@core/ui/button";
+import Menu from "@core/ui/menu";
 
-const TopBar = ({ primary, linkState }) => {
-  console.log({ linkState });
+const TopBar = ({ primary }) => {
   return (
     <Menu
       size="large"

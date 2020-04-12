@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import SemanticFormBuilder from "../../../utils/formig/semantic-ui-form-builder";
+import SemanticFormBuilder from "@core/utils/formig/semantic-ui-form-builder";
 
 const formConfig = {
   form: {

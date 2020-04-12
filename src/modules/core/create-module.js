@@ -14,10 +14,6 @@ const createModule = (config = {}) => {
       subModule.exact = true;
     }
 
-    if (!subModule.module) {
-      subModule = { ...subModule, actions: config.actions };
-    }
-
     return { ...subModule };
   });
 
