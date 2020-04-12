@@ -10,6 +10,7 @@ const securityMiddleware = store => next => action => {
     case "CHECK_USER_IS_AUTHENTICATED":
       return new Promise(async resolve => {
         const tokenChecked = store.getState().Security.tokenChecked;
+        const requestSent = store.getState().Security.requestSent;
         const { token } = currentUser.get();
 
         const hasToken = !!token;
@@ -17,8 +18,12 @@ const securityMiddleware = store => next => action => {
         const { actions } = globalsCache.get("Security");
 
         if (!tokenChecked) {
-          if (hasToken) {
+          if (hasToken && !requestSent) {
             try {
+              console.log("SENDING REQUEST");
+
+              next(actions.setRequestSent(true));
+
               await axios.get(
                 `${services.users.v1.baseURL}/users/check-token`,
                 {
@@ -32,9 +37,7 @@ const securityMiddleware = store => next => action => {
               next(actions.setIsAuthenticated(false));
               next(actions.setTokenChecked(true));
             }
-          } else {
-            console.log("SENDING");
-
+          } else if (!requestSent) {
             next(actions.setTokenChecked(true));
           }
         }

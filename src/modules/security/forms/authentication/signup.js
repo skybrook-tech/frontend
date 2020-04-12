@@ -34,6 +34,7 @@ const validateEmail = value => {
 
   return error;
 };
+
 const validatePassword = value => {
   let error;
 
@@ -150,7 +151,7 @@ const formConfig = {
         );
       },
       props: {
-        placeholder: "Enter your password",
+        placeholder: "Create password",
         type: "password"
       }
     }

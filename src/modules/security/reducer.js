@@ -8,6 +8,7 @@ import globalsCache from "@core/globals-cache";
 const initialState = {
   isAuthenticated: false,
   tokenChecked: false,
+  requestSent: false,
   authenticatedRedirectPath: "/"
 };
 
@@ -17,6 +18,9 @@ const SecurityStore = createSlice({
   reducers: {
     setAuthenticatedRedirectPath: (state, { payload }) => {
       state.isAuthenticated = payload;
+    },
+    setRequestSent: (state, { payload }) => {
+      state.requestSent = payload;
     },
     setIsAuthenticated: (state, { payload }) => {
       state.isAuthenticated = payload;
@@ -75,9 +79,13 @@ SecurityStore.actions = {
       try {
         const { history } = props;
 
+        const [firstName, lastName] = values.fullname.split(" ");
+
+        const payload = { ...values, firstName, lastName };
+
         const { data } = await axios.post(
           `${services.users.v1.baseURL}/users/register`,
-          values
+          payload
         );
         const token = data.token;
 
